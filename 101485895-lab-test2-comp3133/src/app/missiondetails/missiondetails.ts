@@ -4,6 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-missiondetails',
   standalone: false,
   templateUrl: './missiondetails.html',
-  styleUrl: './missiondetails.css',
+  styleUrls: ['./missiondetails.css']
 })
-export class Missiondetails {}
+export class Missiondetails {
+
+}

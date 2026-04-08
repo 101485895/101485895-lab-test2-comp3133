@@ -1,1 +1,29 @@
-<p>missionlist works!</p>
+<h1>SpaceX Mission Launch List</h1>
+
+<div *ngFor="let mission of missions">
+  <mat-card style="margin: 10px; padding: 10px;">
+    
+    <img *ngIf="mission.links.mission_patch_small" 
+         [src]="mission.links.mission_patch_small" 
+         width="100">
+
+    <h2>{{ mission.mission_name }}</h2>
+    <p><strong>Flight #:</strong> {{ mission.flight_number }}</p>
+    <p><strong>Year:</strong> {{ mission.launch_year }}</p>
+
+    <p *ngIf="mission.details">
+      {{ mission.details }}
+    </p>
+
+    <p>
+      <strong>Rocket:</strong>
+      {{ mission.rocket.rocket_name }} ({{ mission.rocket.rocket_type }})
+    </p>
+
+    <button mat-button color="primary" 
+      [routerLink]="['/mission', mission.flight_number]">
+      View Details
+    </button>
+
+  </mat-card>
+</div>

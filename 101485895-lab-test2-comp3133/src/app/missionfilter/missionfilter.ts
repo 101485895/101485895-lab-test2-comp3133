@@ -4,6 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-missionfilter',
   standalone: false,
   templateUrl: './missionfilter.html',
-  styleUrl: './missionfilter.css',
+  styleUrls: ['./missionfilter.css']
 })
-export class Missionfilter {}
+export class Missionfilter {
+
+}
