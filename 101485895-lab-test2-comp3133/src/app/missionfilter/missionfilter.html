@@ -1,13 +1,19 @@
-<div style="margin-bottom: 20px;">
-  <label for="year">Filter by Launch Year:</label>
-  <input
-    id="year"
-    type="text"
-    [(ngModel)]="year"
-    placeholder="Enter year, e.g. 2020"
-    style="margin-left: 10px; margin-right: 10px;"
-  />
+<div class="filter-container">
+  <mat-form-field appearance="outline" class="year-field">
+    <mat-label>Launch Year</mat-label>
+    <input
+      matInput
+      type="text"
+      [(ngModel)]="year"
+      placeholder="Enter year, e.g. 2020"
+    />
+  </mat-form-field>
 
-  <button (click)="onSearch()">Search</button>
-  <button (click)="onClear()">Clear</button>
+  <button mat-raised-button color="primary" (click)="onSearch()">
+    Search
+  </button>
+
+  <button mat-stroked-button color="warn" (click)="onClear()">
+    Clear
+  </button>
 </div>

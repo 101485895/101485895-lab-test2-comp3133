@@ -1,58 +1,73 @@
-<button (click)="goBack()">Back</button>
+<mat-toolbar color="primary">
+  <span>Mission Details</span>
+</mat-toolbar>
 
-<h1>Mission Details</h1>
+<div class="details-container">
+  <button mat-stroked-button color="primary" (click)="goBack()" class="back-button">
+    Back
+  </button>
 
-@if (mission) {
-  @if (mission.links.mission_patch_small) {
-    <img
-      [src]="mission.links.mission_patch_small"
-      width="150"
-      alt="Mission patch"
-    />
-  }
+  @if (mission) {
+    <mat-card class="details-card">
+      @if (mission.links.mission_patch_small) {
+        <img
+          mat-card-image
+          [src]="mission.links.mission_patch_small"
+          alt="Mission patch"
+          class="details-image"
+        />
+      }
 
-  <h2>{{ mission.mission_name }}</h2>
+      <mat-card-header>
+        <mat-card-title>{{ mission.mission_name }}</mat-card-title>
+        <mat-card-subtitle>
+          Flight #{{ mission.flight_number }} • {{ mission.launch_year }}
+        </mat-card-subtitle>
+      </mat-card-header>
 
-  <p><strong>Flight #:</strong> {{ mission.flight_number }}</p>
-  <p><strong>Launch Year:</strong> {{ mission.launch_year }}</p>
+      <mat-card-content>
+        @if (mission.details) {
+          <p>{{ mission.details }}</p>
+        } @else {
+          <p>No mission details available.</p>
+        }
 
-  @if (mission.details) {
-    <p>{{ mission.details }}</p>
+        <p>
+          <strong>Rocket:</strong>
+          {{ mission.rocket.rocket_name }} ({{ mission.rocket.rocket_type }})
+        </p>
+
+        <div class="links-section">
+          @switch (true) {
+            @case (!!mission.links.article_link) {
+              <p><a [href]="mission.links.article_link" target="_blank">Article</a></p>
+            }
+            @default {
+              <p>Article link not available.</p>
+            }
+          }
+
+          @switch (true) {
+            @case (!!mission.links.wikipedia) {
+              <p><a [href]="mission.links.wikipedia" target="_blank">Wikipedia</a></p>
+            }
+            @default {
+              <p>Wikipedia link not available.</p>
+            }
+          }
+
+          @switch (true) {
+            @case (!!mission.links.video_link) {
+              <p><a [href]="mission.links.video_link" target="_blank">Video</a></p>
+            }
+            @default {
+              <p>Video link not available.</p>
+            }
+          }
+        </div>
+      </mat-card-content>
+    </mat-card>
   } @else {
-    <p>No mission details available.</p>
+    <p class="loading-text">Loading mission details...</p>
   }
-
-  <p>
-    <strong>Rocket:</strong>
-    {{ mission.rocket.rocket_name }} ({{ mission.rocket.rocket_type }})
-  </p>
-
-  @switch (true) {
-    @case (!!mission.links.article_link) {
-      <p><a [href]="mission.links.article_link" target="_blank">Article</a></p>
-    }
-    @default {
-      <p>Article link not available.</p>
-    }
-  }
-
-  @switch (true) {
-    @case (!!mission.links.wikipedia) {
-      <p><a [href]="mission.links.wikipedia" target="_blank">Wikipedia</a></p>
-    }
-    @default {
-      <p>Wikipedia link not available.</p>
-    }
-  }
-
-  @switch (true) {
-    @case (!!mission.links.video_link) {
-      <p><a [href]="mission.links.video_link" target="_blank">Video</a></p>
-    }
-    @default {
-      <p>Video link not available.</p>
-    }
-  }
-} @else {
-  <p>Loading mission details...</p>
-}
+</div>

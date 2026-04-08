@@ -1,48 +1,66 @@
-<h1>SpaceX Mission Launch List</h1>
+<mat-toolbar color="primary">
+  <span>SpaceX Mission Launch List</span>
+</mat-toolbar>
 
-<app-missionfilter
-  (yearSelected)="filterByYear($event)"
-  (clearFilter)="clearYearFilter()">
-</app-missionfilter>
+<div class="page-container">
+  <app-missionfilter
+    (yearSelected)="filterByYear($event)"
+    (clearFilter)="clearYearFilter()">
+  </app-missionfilter>
 
-@if (missionCount() > 0) {
-  <p>Showing {{ missionCount() }} missions</p>
-}
-
-@for (mission of missions; track mission.flight_number) {
-  <div style="margin: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
-    
-    @if (mission.links.mission_patch_small) {
-      <img
-        [src]="mission.links.mission_patch_small"
-        width="100"
-        alt="Mission patch"
-      />
-    }
-
-    <h2>{{ mission.mission_name }}</h2>
-    <p><strong>Flight #:</strong> {{ mission.flight_number }}</p>
-    <p><strong>Launch Year:</strong> {{ mission.launch_year }}</p>
-
-    @if (mission.details) {
-      <p>{{ mission.details }}</p>
-    } @else {
-      <p>No details available.</p>
-    }
-
-    <p>
-      <strong>Rocket:</strong>
-      {{ mission.rocket.rocket_name }} ({{ mission.rocket.rocket_type }})
-    </p>
-
-    <button [routerLink]="['/mission', mission.flight_number]">
-      View Details
-    </button>
-  </div>
-} @empty {
-  @if (selectedYear()) {
-    <p>No missions found for year {{ selectedYear() }}</p>
-  } @else {
-    <p>No missions available.</p>
+  @if (missionCount() > 0) {
+    <p class="results-text">Showing {{ missionCount() }} missions</p>
   }
-}
+
+  <div class="mission-grid">
+    @for (mission of missions; track mission.flight_number) {
+      <mat-card class="mission-card">
+        @if (mission.links.mission_patch_small) {
+          <img
+            mat-card-image
+            [src]="mission.links.mission_patch_small"
+            alt="Mission patch"
+            class="mission-image"
+          />
+        }
+
+        <mat-card-header>
+          <mat-card-title>{{ mission.mission_name }}</mat-card-title>
+          <mat-card-subtitle>
+            Flight #{{ mission.flight_number }} • {{ mission.launch_year }}
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          @if (mission.details) {
+            <p>{{ mission.details }}</p>
+          } @else {
+            <p>No details available.</p>
+          }
+
+          <p>
+            <strong>Rocket:</strong>
+            {{ mission.rocket.rocket_name }} ({{ mission.rocket.rocket_type }})
+          </p>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button
+            mat-raised-button
+            color="primary"
+            [routerLink]="['/mission', mission.flight_number]">
+            View Details
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    } @empty {
+      <div class="empty-state">
+        @if (selectedYear()) {
+          <p>No missions found for year {{ selectedYear() }}</p>
+        } @else {
+          <p>No missions available.</p>
+        }
+      </div>
+    }
+  </div>
+</div>
