@@ -10,6 +10,7 @@ import { Mission } from '../models/mission';
 })
 export class Missionlist implements OnInit {
   missions: Mission[] = [];
+  selectedYear: string = '';
 
   constructor(
     private spacexService: Spacexapi,
@@ -18,15 +19,12 @@ export class Missionlist implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('missionlist ngOnInit fired');
     this.loadMissions();
   }
 
   loadMissions(): void {
     this.spacexService.getAllMissions().subscribe({
       next: (data) => {
-        console.log('missions loaded:', data);
-
         this.ngZone.run(() => {
           this.missions = data;
           this.cdr.detectChanges();
@@ -36,5 +34,31 @@ export class Missionlist implements OnInit {
         console.error('error loading missions:', err);
       }
     });
+  }
+
+  filterByYear(year: string): void {
+    this.selectedYear = year;
+
+    if (!year || year.trim() === '') {
+      this.loadMissions();
+      return;
+    }
+
+    this.spacexService.getMissionsByYear(year).subscribe({
+      next: (data) => {
+        this.ngZone.run(() => {
+          this.missions = data;
+          this.cdr.detectChanges();
+        });
+      },
+      error: (err) => {
+        console.error('error filtering missions by year:', err);
+      }
+    });
+  }
+
+  clearYearFilter(): void {
+    this.selectedYear = '';
+    this.loadMissions();
   }
 }

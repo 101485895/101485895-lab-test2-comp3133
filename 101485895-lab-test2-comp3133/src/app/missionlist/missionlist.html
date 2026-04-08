@@ -1,29 +1,46 @@
 <h1>SpaceX Mission Launch List</h1>
 
+<app-missionfilter
+  (yearSelected)="filterByYear($event)"
+  (clearFilter)="clearYearFilter()">
+</app-missionfilter>
+<div *ngIf="missions.length === 0">
+  <p *ngIf="selectedYear">
+    No missions found for year {{ selectedYear }}
+  </p>
+
+  <p *ngIf="!selectedYear">
+    No missions available.
+  </p>
+</div>
 <div *ngFor="let mission of missions">
-  <mat-card style="margin: 10px; padding: 10px;">
-    
-    <img *ngIf="mission.links.mission_patch_small" 
-         [src]="mission.links.mission_patch_small" 
-         width="100">
+  <div style="margin: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+    <img
+      *ngIf="mission.links.mission_patch_small"
+      [src]="mission.links.mission_patch_small"
+      width="100"
+      alt="Mission patch"
+    />
 
     <h2>{{ mission.mission_name }}</h2>
     <p><strong>Flight #:</strong> {{ mission.flight_number }}</p>
-    <p><strong>Year:</strong> {{ mission.launch_year }}</p>
+    <p><strong>Launch Year:</strong> {{ mission.launch_year }}</p>
 
-    <p *ngIf="mission.details">
+    <p *ngIf="mission.details; else noDetails">
       {{ mission.details }}
     </p>
+
+    <ng-template #noDetails>
+      <p>No details available.</p>
+    </ng-template>
 
     <p>
       <strong>Rocket:</strong>
       {{ mission.rocket.rocket_name }} ({{ mission.rocket.rocket_type }})
     </p>
 
-    <button mat-button color="primary" 
-      [routerLink]="['/mission', mission.flight_number]">
+    <button [routerLink]="['/mission', mission.flight_number]">
       View Details
     </button>
-
-  </mat-card>
+  </div>
 </div>

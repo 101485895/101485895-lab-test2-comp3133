@@ -1,1 +1,13 @@
-<p>missionfilter works!</p>
+<div style="margin-bottom: 20px;">
+  <label for="year">Filter by Launch Year:</label>
+  <input
+    id="year"
+    type="text"
+    [(ngModel)]="year"
+    placeholder="Enter year, e.g. 2020"
+    style="margin-left: 10px; margin-right: 10px;"
+  />
+
+  <button (click)="onSearch()">Search</button>
+  <button (click)="onClear()">Clear</button>
+</div>

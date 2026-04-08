@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Spacexapi } from '../network/spacexapi';
 import { Mission } from '../models/mission';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-missiondetails',
@@ -16,7 +17,8 @@ export class Missiondetails implements OnInit {
     private route: ActivatedRoute,
     private spacexService: Spacexapi,
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -35,5 +37,9 @@ export class Missiondetails implements OnInit {
         }
       });
     }
+  }
+
+  goBack(): void {
+  this.location.back();
   }
 }
