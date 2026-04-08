@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone, signal } from '@angular/core';
 import { Spacexapi } from '../network/spacexapi';
 import { Mission } from '../models/mission';
 
@@ -10,7 +10,9 @@ import { Mission } from '../models/mission';
 })
 export class Missionlist implements OnInit {
   missions: Mission[] = [];
-  selectedYear: string = '';
+
+  selectedYear = signal('');
+  missionCount = signal(0);
 
   constructor(
     private spacexService: Spacexapi,
@@ -27,6 +29,7 @@ export class Missionlist implements OnInit {
       next: (data) => {
         this.ngZone.run(() => {
           this.missions = data;
+          this.missionCount.set(data.length);
           this.cdr.detectChanges();
         });
       },
@@ -37,7 +40,7 @@ export class Missionlist implements OnInit {
   }
 
   filterByYear(year: string): void {
-    this.selectedYear = year;
+    this.selectedYear.set(year);
 
     if (!year || year.trim() === '') {
       this.loadMissions();
@@ -48,6 +51,7 @@ export class Missionlist implements OnInit {
       next: (data) => {
         this.ngZone.run(() => {
           this.missions = data;
+          this.missionCount.set(data.length);
           this.cdr.detectChanges();
         });
       },
@@ -58,7 +62,7 @@ export class Missionlist implements OnInit {
   }
 
   clearYearFilter(): void {
-    this.selectedYear = '';
+    this.selectedYear.set('');
     this.loadMissions();
   }
 }
